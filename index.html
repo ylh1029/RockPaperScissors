@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Rock Paper Scissors!</title>
+
+    <style>
+        h1{
+            text-align: center;
+        }
+
+        #container{
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+        
+        p{
+            text-align: center;
+        }
+
+        .icon{
+            margin: 5px; 
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Play Rock Paper Scissors!</h1>
+    <button id="Rules">Rules</button>
+    <div id="container">
+        <div class="icon" id="rock">
+            <img src="Photos/rock.jpg">
+            <p>Rock</p>
+        </div>
+        <div class="icon" id="paper">
+            <img src="Photos/paper.jpg">
+            <p>Paper</p>
+        </div>
+        <div class="icon" id="scissors">
+            <img src="Photos/scissors.jpg">
+            <p>Scissors</p>
+        </div>
+    </div>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        function getComputerChoice(){
+            return Math.floor(Math.random()*3);
+        }
+
+        function getHumanChoice(){
+            let result = prompt("Input your choice for Rock, Paper or Scissors");
+            return result;
+        }
+
+        let humanScore = 0;
+        let computerScore = 0;
+
+        function playRound(humanChoice, computerChoice){
+            if(computerChoice == 0){
+                console.log("Computer chose rock");
+            }
+            else if(computerChoice == 1){
+                console.log("Computer chose scissors");
+            }
+            if(computerChoice == 2){
+                console.log("Computer chose paper");
+            }
+
+            let humanInput = humanChoice.toLowerCase();
+            if(((humanInput == "rock") && (computerChoice == 1)) ||
+                ((humanInput == "paper") && (computerChoice == 0))||
+                ((humanInput == "scissors") && (computerChoice == 2))
+            ){
+                    humanScore++;
+                    console.log("You win!");
+            }
+
+            else if(((humanInput == "rock") && (computerChoice == 0))||
+                    ((humanInput == "scissors") && (computerChoice == 1))||
+                    ((humanInput == "paper") && (computerChoice == 2))
+            ){
+                console.log("Draw");
+            }
+
+            else{
+                computerScore++;
+                console.log("Computer win!");
+            }
+        }
+
+        for(let i = 0; i < 5; i++){
+            const humanSelection = getHumanChoice();
+            const computerSelection = getComputerChoice();
+            playRound(humanSelection, computerSelection);
+        }
+
+        console.log("Final score: Player Point- " + humanScore + " " + "Computer Point- " + computerScore);
+
+        $('#Rules').click(function(){
+			$('body').css('background', '#000');
+		});
+    </script>
+</body>
+</html>
