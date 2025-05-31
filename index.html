@@ -10,100 +10,265 @@
             text-align: center;
         }
 
+        img{
+            width: 100px;
+            margin: 10px;
+        }
+
         #container{
             margin-left: auto;
             margin-right: auto;
             display: flex;
             flex-direction: row;
-            justify-content: space-around;
+            justify-content: center;
+            width: 900px;
         }
         
         p{
             text-align: center;
         }
 
-        .icon{
-            margin: 5px; 
+        button{
+            display: block;
+            margin: 15px;
+        }
+
+        .output{
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 900px;
+            height: 500px;            
+            display: flex;
+            flex-direction: row;
+        }
+
+        #userOutput{
+            border: solid 1px #000;
+            width: 410px;
+            height: 460px;
+            padding: 20px;
+        }
+
+        #cpOutput{
+            border: solid 1px #000;
+            width: 410px;
+            height: 460px;
+            padding: 20px;
+        }
+
+        th {
+			border: 1px solid #000;
+			border-bottom: 1px solid #000;
+			padding: 10px;
+            align-items: start;
+            vertical-align: middle;
+		}
+
+		td {
+			border: 1px solid #000;
+			padding: 10px;
+		}
+
+		table {
+            margin: 10px;
+            margin-left: auto;
+            margin-right: auto;
+			border-collapse: collapse;
+			text-align: center;
+			width: 900px;
+			table-layout: fixed;
+		}
+
+        #display{
+            height: 250px;
+        }
+
+        #score > th{
+            height: 200px;
+            padding: 20px;
+            vertical-align: top;
+        }
+
+        #buttons{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
         }
 
     </style>
 </head>
 
 <body>
-    <h1>Play Rock Paper Scissors!</h1>
-    <button id="Rules">Rules</button>
-    <div id="container">
-        <div class="icon" id="rock">
-            <img src="Photos/rock.jpg">
-            <p>Rock</p>
-        </div>
-        <div class="icon" id="paper">
-            <img src="Photos/paper.jpg">
-            <p>Paper</p>
-        </div>
-        <div class="icon" id="scissors">
-            <img src="Photos/scissors.jpg">
-            <p>Scissors</p>
-        </div>
+    <h1>Play Rock Paper Scissors Out of 5!</h1>
+    <div id="buttons">
+        <button id="rules">Rules</button>
+        <button id="restart">Restart</button>
     </div>
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script>
-        function getComputerChoice(){
-            return Math.floor(Math.random()*3);
+    
+    <table>
+        <tr>
+            <th>User Choice</th>
+            <th>Computer Choice</th>
+        </tr>
+
+        <tr id="display">
+            <th class="user"></th>
+            <th class="cp"></th>
+        </tr>
+
+        <tr id="score">
+            <th class="user">User Score:<p></p></th>
+            <th class="cp">Computer Score:<p></p></th>
+        </tr>
+    </table>
+   
+    <div id="container">
+        <img id = "rock" src="Photos/rock.jpg">
+        <img id = "paper" src="Photos/paper.jpg">
+        <img id = "scissors" src="Photos/scissors.jpg">
+    </div>
+
+<script>
+    let humanScore = 0;
+    let computerScore = 0;
+    let numGame = 0;
+    const input = document.querySelector("#container");
+    const userDisplay = document.createElement("img");   
+    const cpDisplay = document.createElement("img");
+    const userScoreDisplay = document.createElement("p");
+    const cpScoreDisplay = document.createElement("p");
+    const userResult = document.createElement("p");
+    const cpResult = document.createElement("p");
+
+    userScoreDisplay.textContent = "0";
+    cpScoreDisplay.textContent = "0";
+    userScoreDisplay.setAttribute("style", "font-size: 2.5em");
+    cpScoreDisplay.setAttribute("style", "font-size: 2.5em");
+    userResult.setAttribute("style", "font-size: 2.5em");
+    cpResult.setAttribute("style", "font-size: 2.5em");
+    
+    
+    function getComputerChoice(){
+        return Math.floor(Math.random()*3);
+    }
+        
+    function playRound(humanInput, computerChoice){
+        const choice = ["rock", "scissors", "paper"]
+        cpDisplay.remove();
+        cpDisplay.setAttribute("src", `Photos/${choice[computerChoice]}.jpg`);
+        const parent = document.querySelector("#display .cp");
+        parent.append(cpDisplay);
+        
+        if(((humanInput == "rock") && (computerChoice == 1)) ||
+        ((humanInput == "paper") && (computerChoice == 0))||
+        ((humanInput == "scissors") && (computerChoice == 2))
+        ){
+                humanScore++;
+                userScoreDisplay.textContent = `${humanScore}`;
+                userResult.textContent = "WIN!";
+                userResult.setAttribute("style", "color: #F00");
+                cpResult.textContent = "Lose";
+                cpResult.setAttribute("style", "color: #00F");
         }
 
-        function getHumanChoice(){
-            let result = prompt("Input your choice for Rock, Paper or Scissors");
-            return result;
+        else if(((humanInput == "rock") && (computerChoice == 0))||
+                ((humanInput == "scissors") && (computerChoice == 1))||
+                ((humanInput == "paper") && (computerChoice == 2))
+        ){
+            userResult.textContent = "DRAW";
+            cpResult.textContent = "DRAW";
+            userResult.setAttribute("style", "color: #0F0");
+            cpResult.setAttribute("style", "color: #0F0");
         }
 
-        let humanScore = 0;
-        let computerScore = 0;
+        else{
+            computerScore++;
+            cpScoreDisplay.textContent = `${computerScore}`;
+            cpResult.textContent = "WIN!";
+            cpResult.setAttribute("style", "color: #F00");
+            userResult.textContent = "Lose";
+            userResult.setAttribute("style", "color: #00F");
+        }
 
-        function playRound(humanChoice, computerChoice){
-            if(computerChoice == 0){
-                console.log("Computer chose rock");
-            }
-            else if(computerChoice == 1){
-                console.log("Computer chose scissors");
-            }
-            if(computerChoice == 2){
-                console.log("Computer chose paper");
-            }
+        const userScore = document.querySelector("#score .user");
+        const cpScore = document.querySelector("#score .cp");
 
-            let humanInput = humanChoice.toLowerCase();
-            if(((humanInput == "rock") && (computerChoice == 1)) ||
-                ((humanInput == "paper") && (computerChoice == 0))||
-                ((humanInput == "scissors") && (computerChoice == 2))
-            ){
-                    humanScore++;
-                    console.log("You win!");
-            }
+        userScore.append(userScoreDisplay);
+        userScore.append(userResult);
+        cpScore.append(cpScoreDisplay);
+        cpScore.append(cpResult);
+    }     
 
-            else if(((humanInput == "rock") && (computerChoice == 0))||
-                    ((humanInput == "scissors") && (computerChoice == 1))||
-                    ((humanInput == "paper") && (computerChoice == 2))
-            ){
-                console.log("Draw");
+    input.addEventListener("click", (event) => {
+        let comment = "";
+        if(numGame >= 5){
+            if(humanScore == computerScore){
+                comment += "It's a draw!";
+            }
+            else if(humanScore > computerScore){
+                comment += "Congrats! You won!";
             }
 
             else{
-                computerScore++;
-                console.log("Computer win!");
+                comment += "That was close! Next one. ";
             }
+
+            comment += " Press reset to play again.";
+            alert(comment);
         }
 
-        for(let i = 0; i < 5; i++){
-            const humanSelection = getHumanChoice();
-            const computerSelection = getComputerChoice();
-            playRound(humanSelection, computerSelection);
+        else{
+            userDisplay.remove();
+            const userChoice = event.target;
+            const computerChoice = getComputerChoice();
+            let humanChoice = "";
+            switch(userChoice.id){
+            case 'rock':
+                humanChoice += "rock";
+                userDisplay.setAttribute("src", "Photos/rock.jpg");
+                break;
+            case 'paper':
+                humanChoice += "paper";
+                userDisplay.setAttribute("src", "Photos/paper.jpg");
+                break;
+            case 'scissors':
+                humanChoice += "scissors";
+                userDisplay.setAttribute("src", "Photos/scissors.jpg");
+                break;
+            }
+
+            const parent = document.querySelector("#display .user");
+            parent.append(userDisplay);
+
+            playRound(humanChoice, computerChoice);
+            numGame++;
         }
+    });
 
-        console.log("Final score: Player Point- " + humanScore + " " + "Computer Point- " + computerScore);
+    const rules = document.querySelector("body");
+    rules.addEventListener("click", (event)=>{
+        const which = event.target;
+        switch(which.id){
+        case "restart": 
+            humanScore = 0;
+            computerScore = 0;
+            userScoreDisplay.remove();
+            cpScoreDisplay.remove();
+            userResult.remove();
+            cpResult.remove();
+            cpDisplay.remove();
+            userDisplay.remove();   
+            numGame = 0; 
 
-        $('#Rules').click(function(){
-			$('body').css('background', '#000');
-		});
-    </script>
+            break;
+        case "rules":
+            const change = document.querySelector("body");
+            change.setAttribute("style", "background: red");
+            break;
+        }
+    });
+</script>
 </body>
 </html>
