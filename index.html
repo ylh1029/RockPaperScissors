@@ -155,6 +155,8 @@
     }
         
     function playRound(humanInput, computerChoice){
+        userScoreDisplay.textContent = `${humanScore}`;
+        cpScoreDisplay.textContent = `${computerScore}`;
         const choice = ["rock", "scissors", "paper"]
         cpDisplay.remove();
         cpDisplay.setAttribute("src", `Photos/${choice[computerChoice]}.jpg`);
@@ -261,7 +263,6 @@
             cpDisplay.remove();
             userDisplay.remove();   
             numGame = 0; 
-
             break;
         case "rules":
             const change = document.querySelector("body");
